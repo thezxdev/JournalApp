@@ -55,7 +55,7 @@ const itemData = [
 
 export const ImageGallery = () => {
   return (
-    <ImageList sx={{ width: '100%', height: 500 }} cols={ 2 } rowHeight={ 200 }>
+    <ImageList sx={{ width: '100%', height: 500 }} cols={ 3 } rowHeight={ 200 }>
       {itemData.map((item) => (
         <ImageListItem key={item.img}>
           <img
