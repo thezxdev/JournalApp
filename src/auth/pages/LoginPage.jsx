@@ -1,11 +1,16 @@
 // Ponerle un alias al Link del react-router-dom para usarlo con el Link de material
+import { useDispatch } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { Google } from '@mui/icons-material';
 import { Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
+import { checkingAuthentication, startGoogleSignIn } from '../../store/auth';
 
 export const LoginPage = () => {
+
+  // Creación del dispatch del redux
+  const dispatch = useDispatch();
 
   const { email, password, onInputChange } = useForm({
     email: 'zxzx@gmail.com',
@@ -14,10 +19,15 @@ export const LoginPage = () => {
   
   const onGoogleSigIn = () => {
     console.log('onGoogleSignIn');
+
+    dispatch( startGoogleSignIn() );
   }
 
   const onSubmit = ( e ) => {
     e.preventDefault();
+
+    // Llamado al thunk de auth
+    dispatch( checkingAuthentication( email, password ) );
 
     console.log( email, password );
   }
