@@ -11,11 +11,22 @@ export const authSlice = createSlice({
     errorMessage: null,
   },
   reducers: {
-    login: ( state, action ) => {
-
+    login: ( state, { payload } ) => {
+      // Llenar los campos con la información que provee firebase
+      state.status = 'authenticated'
+      state.uid = payload.uid;
+      state.email = payload.email;
+      state.displayName = payload.displayName;
+      state.photoURL = payload.photoURL;
+      state.errorMessage = null;
     },
-    logout: ( state, payload ) => {
-
+    logout: ( state, { payload } ) => {
+      state.status = 'not-authenticated;'; // 'checking', 'not-authenticated', 'authenticated'
+      state.uid = null;
+      state.email = null;
+      state.displayName = null;
+      state.photoURL = null;
+      state.errorMessage = payload;
     },
     checkingCredentials: ( state ) => {
       state.status = 'checking';
