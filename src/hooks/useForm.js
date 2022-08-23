@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export const useForm = ( initialForm = {}, formValidations = {} ) => {
 
@@ -10,6 +10,16 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
     createValidators();
   }, [ formState ]);
   
+  // Saber si el formulario es válido
+  const isFormValid = useMemo( () => {
+
+    // Iterar sobre el formValidation (valores de validación) y saber si el valor de sus propiedades es diferente de null
+    for (const formValue of Object.keys( formValidation ) ) {
+      if( formValidation[ formValue ] !== null ) return false;
+    }
+
+    return true;
+  }, [ formValidation ] );
 
   const onInputChange = ({ target }) => {
     const { name, value } = target;
@@ -38,6 +48,8 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
       formCheckedValues[`${ formField }Valid`] = fn( formState[ formField ] ) ? null : errorMessage;
     }
 
+    // console.log( formValidation );
+
     // Asignar las validaciones al state
     setformValidation( formCheckedValues );
 
@@ -50,5 +62,6 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
     onResetForm,
     // Esparcir validaciones del formulario
     ...formValidation,
+    isFormValid
   }
 }
