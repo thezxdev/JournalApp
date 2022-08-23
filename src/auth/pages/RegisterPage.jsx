@@ -5,14 +5,22 @@ import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks/useForm';
 
 const formData = {
-  email: 'zxzx@gmail.com',
-  password: '123456',
-  displayName: 'zxzx'
+  email: '',
+  password: '',
+  displayName: ''
+}
+
+// Validaciones personalizadas
+const formValidations = {
+  email: [ ( value ) => value.includes('@'), 'El correo debe de tener una @' ],
+  password: [ ( value ) => value.length >= 6, 'El password debe de tener más de 6 letras' ],
+  displayName: [ ( value ) => value.lengt >= 1, 'El nombre es obligatorio' ]
 }
 
 export const RegisterPage = () => {
 
-  const { displayName, email, password, onInputChange, formState } = useForm( formData );
+  const { formState, displayName, email, password, onInputChange,
+  isFormValid, displayNameValid, emailValid, passwordValid } = useForm( formData, formValidations );
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -33,6 +41,8 @@ export const RegisterPage = () => {
               name="displayName"
               value={ displayName }
               onChange={ onInputChange }
+              error={ !displayNameValid }
+              helperText={ displayNameValid }
             />
           </Grid> {/* Nombre */}
 
