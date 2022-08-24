@@ -1,4 +1,4 @@
-import { registerUserWithEmailPassword, signInWithGoogle } from '../../firebase/providers';
+import { loginWithEmailPassword, registerUserWithEmailPassword, signInWithGoogle } from '../../firebase/providers';
 import { checkingCredentials, login, logout } from './';
 
 export const checkingAuthentication = ( email, password ) => {
@@ -43,5 +43,27 @@ export const startCreatingUserWithEmailPassword = ({ password, displayName, emai
       email,
       photoURL
     }) );
+  }
+}
+
+export const startLoginWithEmailPassword = ( { email, password } ) => {
+  return async( dispatch ) => {
+
+    // Mandar a llamar el checkingCredentials del authSlice
+    dispatch( checkingCredentials() );
+    
+    // Mandar a llamar a la función para iniciar sesión y obtener los valores que se almacenarán en el store
+    const { ok, uid, displayName, errorMessage, photoURL } = await loginWithEmailPassword( { email, password } );
+    
+    // Si hay un error se llama el logout
+    if( !ok ) return dispatch( logout( errorMessage ) );
+
+    // Se manda a llamar el login y se guardan los valores en el tore
+    dispatch( login({
+      uid,
+      displayName,
+      email,
+      photoURL
+    }));
   }
 }
