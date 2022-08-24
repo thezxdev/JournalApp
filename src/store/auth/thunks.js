@@ -33,7 +33,9 @@ export const startCreatingUserWithEmailPassword = ({ password, displayName, emai
     // Mandar a llamar a la función para crear el usuario
     const { ok, uid, photoURL, errorMessage } = await registerUserWithEmailPassword({ password, displayName, email });
 
-    if( !ok ) return dispatch( logout({ errorMessage }) );
+    console.log( errorMessage );
+
+    if( !ok ) return dispatch( logout( errorMessage ) );
 
     dispatch( login({
       uid,

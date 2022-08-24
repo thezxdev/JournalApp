@@ -1,8 +1,8 @@
 // Ponerle un alias al Link del react-router-dom para usarlo con el Link de material
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Grid, Link, TextField, Typography } from '@mui/material';
+import { Alert, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks/useForm';
 import { startCreatingUserWithEmailPassword } from '../../store/auth';
@@ -24,6 +24,11 @@ export const RegisterPage = () => {
 
   const dispatch = useDispatch();
   const [formSubmitted, setFormSubmitted] = useState( false );
+
+  // Obtener status y errorMessage del store
+  const { status, errorMessage } = useSelector( state => state.auth );
+  // Saber si el status está en checking para desactivar el botón de submit
+  const isCheckingAuthentication = useMemo( () => {status === 'checking'}, [ status ]);
 
   const { formState, displayName, email, password, onInputChange,
   isFormValid, displayNameValid, emailValid, passwordValid } = useForm( formData, formValidations );
@@ -85,8 +90,24 @@ export const RegisterPage = () => {
           </Grid> {/* Contraseña */}
 
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+            
+            {/* Mostrar mensaje del error */}
+            <Grid
+              item
+              xs={12}
+              display={ !!errorMessage ? '' : 'none' }
+            >
+              <Alert severity='error'>{ errorMessage }</Alert>
+            </Grid>
+
+            {/* Desactivar el botón si se está haciendo la verificación del status */}
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={ isCheckingAuthentication }
+              >
                 Crear cuenta
               </Button>
             </Grid> {/* Login */}
