@@ -12,7 +12,7 @@ export const LoginPage = () => {
 
 
   const { status, errorMessage } = useSelector( state => state.auth );
-  console.log( status );
+  // console.log( status );
   // Creación del dispatch del redux
   const dispatch = useDispatch();
 
@@ -28,11 +28,11 @@ export const LoginPage = () => {
   }, [ status ] );
   
   const onGoogleSigIn = () => {
-    console.log('onGoogleSignIn');
+    // console.log('onGoogleSignIn');
 
     dispatch( startGoogleSignIn() );
 
-    console.log( isAuthenticating );
+    // console.log( isAuthenticating );
   }
 
   const onSubmit = ( e ) => {
