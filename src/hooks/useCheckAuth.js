@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseAuth } from '../firebase/config';
 import { login, logout } from '../store/auth';
+import { startLoadingNotes } from '../store/journal';
 
 export const useCheckAuth = () => {
 
@@ -20,6 +21,8 @@ export const useCheckAuth = () => {
       const { uid, email, displayName, photoURL } = user;
       // Llenar el store con la información del usuario y redirigirlo a la págian principal
       dispatch( login( { uid, email, displayName, photoURL } ) );
+      // Empezar a cargar las notas del usuario actual
+      dispatch( startLoadingNotes() );
     } );
   }, [] );
 
