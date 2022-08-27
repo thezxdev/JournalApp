@@ -1,9 +1,13 @@
 import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
+import { addNewEmptyNote, savingNewNote, setActiveNote } from './journalSlice';
 
 export const startNewNote = () => {
 
   return async( dispatch, getState ) => {
+
+    // Marcar la propiedad isSaving en true para deshabilitar el botón
+    dispatch( savingNewNote() );
 
     // Obtener uid del usuario con la función getState
     const { uid } = getState().auth;
@@ -20,12 +24,16 @@ export const startNewNote = () => {
     // collection recibe una referencia a la raíz de firestore, y la ruta en la que se ingresarán los datos (path/ templateStrings, ...)
     // setDoc recibe una referencia al documento que se va a ingresar (doc) y la información de ese documento (newNote)
     const newDoc = doc( collection( FirebaseDB, `${ uid }/journal/notes` ) );
-    const setDocResp = await setDoc( newDoc, newNote );
+    await setDoc( newDoc, newNote );
 
-    console.log( { newDoc, setDocResp } );
+    newNote.id = newDoc.id;
 
-    // dispatch
-    // dispatch( newNote );
+    
+    // Agregar nota al store
+    dispatch( addNewEmptyNote( newNote ) );
+    
+    // Asignar la nota activa (la cual editar o crear)
+    dispatch( setActiveNote( newNote ) );
     // dispatch( activarNote );
 
   }
