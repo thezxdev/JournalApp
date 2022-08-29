@@ -8,6 +8,7 @@ import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
 
+// Poner los valores del formulario fuera del componente para que no se infinitamente
 const formData = {
   email: '',
   password: ''
