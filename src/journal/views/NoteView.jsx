@@ -2,6 +2,10 @@ import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SaveOutlined } from '@mui/icons-material';
 import { Button, Grid, TextField, Typography } from '@mui/material';
+// Importar sweet alert 2
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
+
 import { useForm } from '../../hooks';
 import { ImageGallery } from '../components';
 import { setActiveNote, startSaveNote } from '../../store/journal';
@@ -11,7 +15,7 @@ export const NoteView = () => {
 
   const dispatch = useDispatch();
 
-  const { active: note } = useSelector( state => state.journal );
+  const { active: note, messageSaved } = useSelector( state => state.journal );
 
   const { body, title, date, onInputChange, formState } = useForm( note );
 
@@ -24,6 +28,17 @@ export const NoteView = () => {
   useEffect(() => {
     dispatch( setActiveNote( formState ) );
   }, [ formState ]);
+
+  // Mostrar alerta cuando el mensaje cambié y sea mayor a 0 de longitud 
+  useEffect( () => {
+    if( messageSaved.length > 0 ) {
+      Swal.fire(
+        'Nota actualizada',
+        messageSaved,
+        'success'
+      )
+    }
+  }, [ messageSaved ]);
   
   const onSaveNote = () => {
     dispatch( startSaveNote() );
