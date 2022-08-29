@@ -9,6 +9,11 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
   useEffect(() => {
     createValidators();
   }, [ formState ]);
+
+  // Cambiar los valorees del formulario cuando una propiedad del valor inicial cambie
+  useEffect( () => {
+    setFormState( initialForm );
+  }, [ initialForm ]);
   
   // Saber si el formulario es válido
   const isFormValid = useMemo( () => {
