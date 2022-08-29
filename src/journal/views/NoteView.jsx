@@ -15,7 +15,7 @@ export const NoteView = () => {
 
   const dispatch = useDispatch();
 
-  const { active: note, messageSaved } = useSelector( state => state.journal );
+  const { active: note, messageSaved, isSaving } = useSelector( state => state.journal );
 
   const { body, title, date, onInputChange, formState } = useForm( note );
 
@@ -29,7 +29,7 @@ export const NoteView = () => {
     dispatch( setActiveNote( formState ) );
   }, [ formState ]);
 
-  // Mostrar alerta cuando el mensaje cambié y sea mayor a 0 de longitud 
+  // Mostrar alerta cuando el mensaje cambie y sea mayor a 0 de longitud 
   useEffect( () => {
     if( messageSaved.length > 0 ) {
       Swal.fire(
@@ -59,6 +59,7 @@ export const NoteView = () => {
 
       <Grid item>
         <Button
+          disabled={ isSaving }
           onClick={ onSaveNote }
           color="primary"
           sx={{ padding: 2 }}
