@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SaveOutlined } from '@mui/icons-material';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { SaveOutlined, UploadOutlined } from '@mui/icons-material';
+import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 // Importar sweet alert 2
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
@@ -24,6 +24,9 @@ export const NoteView = () => {
     return newDate.toUTCString();
   }, [ date ]);
 
+  // Referencia al input de tipo file
+  const fileInputRef = useRef();
+
   // Guardar en el estado los nuevos valores del formulario
   useEffect(() => {
     dispatch( setActiveNote( formState ) );
@@ -44,6 +47,14 @@ export const NoteView = () => {
     dispatch( startSaveNote() );
   }
 
+  // Función a llamar para subir archivos
+  const onFileInputChange = ({ target }) => {
+    if( target.files === 0 ) return;
+    
+    console.log('Subiendo archivos');
+    // dispatch( startUploadingFiles( target.files ));
+  }
+
   return (
     <Grid
       container
@@ -58,6 +69,23 @@ export const NoteView = () => {
       </Grid>
 
       <Grid item>
+
+        <input
+          type="file"
+          multiple
+          ref={ fileInputRef } // Mantener la referencia
+          onChange={ onFileInputChange }
+          style={{ display: 'none' }}
+        />
+
+        <IconButton
+          color="primary"
+          disabled={ isSaving }
+          onClick={ () => fileInputRef.current.click() } // Mandar a llamar el método click del ref
+        >
+          <UploadOutlined />
+        </IconButton>
+
         <Button
           disabled={ isSaving }
           onClick={ onSaveNote }

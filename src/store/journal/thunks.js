@@ -75,7 +75,7 @@ export const startSaveNote = () => {
     const noteToFireStore = { ...note };
     // Eliminar id de la nota
     delete noteToFireStore.id;
-    console.log( noteToFireStore );
+    // console.log( noteToFireStore );
 
     // Referencia del documento a actualizar
     const docRef = doc( FirebaseDB, `${ uid }/journal/notes/${ note.id }` );
