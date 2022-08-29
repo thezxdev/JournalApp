@@ -6,7 +6,7 @@ export const journalSlice = createSlice({
     isSaving: false,
     messageSaved: '',
     notes: [],
-    active: null
+    active: null,
     // active: {
     //   id: 'ABC123',
     //   title: '',
@@ -35,6 +35,10 @@ export const journalSlice = createSlice({
       state.isSaving = true;
       state.messageSaved = '';
     },
+    setPhotosToActiveNote: (state, action) => {
+      state.active.imageUrls = [ ...state.active.imageUrls, ...action.payload ];
+      state.isSaving = false;
+    },
     updateNote: ( state, action ) => {
       state.isSaving = false;
       // Actualizar referencia local del array de las notas
@@ -60,10 +64,11 @@ export const journalSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   addNewEmptyNote,
+  deleteNoteById,
+  savingNewNote,
   setActiveNote,
   setNotes,
+  setPhotosToActiveNote,
   setSaving,
   updateNote,
-  deleteNoteById,
-  savingNewNote
 } = journalSlice.actions;

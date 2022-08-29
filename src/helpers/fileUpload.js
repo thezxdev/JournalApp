@@ -18,12 +18,12 @@ export const fileUpload = async( file ) => {
       body: formData
     } );
 
-    console.log( resp );
+    // console.log( resp );
     if( !resp.ok ) throw new Error('No se pudo subir la imagen');
 
     // Serializar el cuerpo de la petición
     const cloudResponse = await resp.json();
-    console.log({ cloudResponse });
+    // console.log({ cloudResponse });
 
     return cloudResponse.secure_url;
 
